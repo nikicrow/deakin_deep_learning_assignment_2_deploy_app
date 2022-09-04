@@ -10,13 +10,6 @@ st.write("Upload any image and we will tell you if it is recyclable or not")
 
 uploaded_file = st.file_uploader("Please upload an image using this image uploader")
 
-import boto3
-s3_resource = boto3.resource('s3', region_name='ap-southeast-2')
-
-bucket='deakin-sit744-assignment-2'
-key='models/model_2_augmented.h5'
-loaded_model = s3_resource.Bucket(bucket).Object(key).get()['Body'].read()
-
 #loaded_model = tf.keras.models.load_model('drive/MyDrive/Colab Notebooks/models/model_2_augmented.h5')
 def is_recyclable(uploaded_file):
     return True
