@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 import tensorflow as tf
-from dotenv import load_dotenv
-import os
+# from dotenv import load_dotenv
+# import os
 
 # Add app title
 st.title('Is this Recyclable?')
@@ -12,7 +12,6 @@ st.write("Upload any image and we will tell you if it is recyclable or not")
 
 uploaded_file = st.file_uploader("Please upload an image using this image uploader")
 
-#loaded_model = tf.keras.models.load_model('drive/MyDrive/Colab Notebooks/models/model_2_augmented.h5')
 def is_recyclable(uploaded_file):
 
     # my_env_file = 'KEYS.env'
@@ -31,8 +30,6 @@ def is_recyclable(uploaded_file):
 
     # bucket = BUCKET
     # key = 'models/model_2_augmented.h5'
-
-    # loaded_model = s3_resource.Bucket(bucket).Object(key).get()['Body'].read()
 
     return True
 
