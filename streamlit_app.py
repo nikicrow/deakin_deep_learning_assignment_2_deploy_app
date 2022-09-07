@@ -4,6 +4,7 @@ import numpy as np
 from matplotlib import image
 import tensorflow as tf
 import boto3
+from keras.models import load_model
 
 # Add app title
 st.title('Is this Recyclable?')
@@ -45,9 +46,10 @@ def is_recyclable(uploaded_file):
 
     # load the model
     loaded_model = s3_resource.Bucket(BUCKET).Object(KEY).get()['Body'].read()
+    model = load_model(loaded_model)
 
     # make prediction
-    prediction = loaded_model.predict(np.expand_dims(preprocessed_image, axis=0))
+    prediction = model.predict(np.expand_dims(preprocessed_image, axis=0))
     # return outcome and prediction
     if prediction >= 0.5:
         return True, round(prediction*100,2)
