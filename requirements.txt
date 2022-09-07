@@ -1,4 +1,2 @@
 tensorflow
 boto3
-dotenv
-os
