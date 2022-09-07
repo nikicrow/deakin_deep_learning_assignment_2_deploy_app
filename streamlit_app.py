@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from PIL import Image
+from matplotlib import image
 import tensorflow as tf
 import boto3
 
@@ -10,7 +10,7 @@ st.title('Is this Recyclable?')
 st.write("Upload any image and we will tell you if it is recyclable or not")
 
 # Add image uploader
-uploaded_file = st.file_uploader("Please upload an image using this image uploader")
+uploaded_file = st.file_uploader("Please upload an image using this image uploader",type=['png', 'jpg'])
 
 # image preprocessor
 def preprocess_image(image):
@@ -26,41 +26,40 @@ def preprocess_image(image):
     return image
 
 def is_recyclable(uploaded_file):
-    # does it look like an image
-    if len(uploaded_file.shape) == 3 and uploaded_file.shape[-1] in (3,4):
-        # preprocess image
-        preprocessed_image = preprocess_image(uploaded_file)
+    # preprocess image
+    current_image = image.imread(uploaded_file)
+    img_array = np.asarray(current_image)
+    preprocessed_image = preprocess_image(img_array)
 
-        AWS_KEY = st.secrets["AWS_KEY"]
-        AWS_SECRET_KEY = st.secrets["AWS_SECRET_KEY"]
-        BUCKET = st.secrets["BUCKET"]
-        KEY = st.secrets["KEY"]
+    # get secrets for getting model
+    AWS_KEY = st.secrets["AWS_KEY"]
+    AWS_SECRET_KEY = st.secrets["AWS_SECRET_KEY"]
+    BUCKET = st.secrets["BUCKET"]
+    KEY = st.secrets["KEY"]
 
-        # set up the s3 resource with all our secrets
-        s3_resource = boto3.resource('s3', 
-                                    aws_access_key_id = AWS_KEY,
-                                    aws_secret_access_key = AWS_SECRET_KEY, 
-                                    region_name='ap-southeast-2')
+    # set up the s3 resource with all our secrets
+    s3_resource = boto3.resource('s3', 
+                                aws_access_key_id = AWS_KEY,
+                                aws_secret_access_key = AWS_SECRET_KEY, 
+                                region_name='ap-southeast-2')
 
-        # load the model
-        loaded_model = s3_resource.Bucket(BUCKET).Object(KEY).get()['Body'].read()
+    # load the model
+    loaded_model = s3_resource.Bucket(BUCKET).Object(KEY).get()['Body'].read()
 
-        prediction = loaded_model.predict(np.expand_dims(preprocessed_image, axis=0))
-
-        if prediction >= 0.5:
-            return True, round(prediction*100,2)
-        else:
-            return False, round(prediction*100,2)
+    # make prediction
+    prediction = loaded_model.predict(np.expand_dims(preprocessed_image, axis=0))
+    # return outcome and prediction
+    if prediction >= 0.5:
+        return True, round(prediction*100,2)
     else:
-        return 
+        return False, round(prediction*100,2)
 
 
 # If we get a picture uploaded, lets do stuff to it!
 if uploaded_file is not None:
-    image = Image.open(uploaded_file)	
-	
+    # show uploaded file
     st.image(uploaded_file, caption='Input Image', use_column_width=True)
-
+    # get outcome and prediction
     outcome, prediction = is_recyclable(uploaded_file)
     # create a function that returns the answer
     if outcome == True:
