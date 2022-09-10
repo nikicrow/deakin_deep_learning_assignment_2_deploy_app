@@ -78,13 +78,3 @@ if uploaded_file is not None:
     else:
         st.write('Looks like there\'s a problem with processing this image...')
     
-# Add background
-[theme]
-
-# Primary accent for interactive elements
-primaryColor = '#546E57'
-backgroundColor = '#BEE1C1'
-textColor = '#0D0E0D'
-# Accepted values (serif | sans serif | monospace) 
-# Default: "sans serif"
-font = "sans serif"
