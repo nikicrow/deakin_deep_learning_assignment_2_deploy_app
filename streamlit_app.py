@@ -55,9 +55,9 @@ def is_recyclable(uploaded_file):
     prediction = model.predict(np.expand_dims(preprocessed_image, axis=0))
     # return outcome and prediction
     if prediction >= 0.5:
-        return True, round(prediction*100,2)
+        return True
     else:
-        return False, round(prediction*100,2)
+        return False
 
 
 # If we get a picture uploaded, lets do stuff to it!
@@ -65,12 +65,12 @@ if uploaded_file is not None:
     # show uploaded file
     st.image(uploaded_file, caption='Input Image', use_column_width=True)
     # get outcome and prediction
-    outcome, prediction = is_recyclable(uploaded_file)
+    outcome = is_recyclable(uploaded_file)
     # create a function that returns the answer
     if outcome == True:
-        st.write(f'This looks recyclable! To be precise, there is a {prediction}% chance it is recyclable. Please make sure recycle it.', use_column_width=True) 	
+        st.write(f'This looks recyclable! Please make sure recycle it.', use_column_width=True) 	
     elif outcome == False:
-        st.write(f'This doesn\'t look recyclable. To be precise, there is a {prediction}% chance it is recyclable. Can you reuse it instead?', use_column_width=True) 	
+        st.write(f'This doesn\'t look recyclable. Can you reuse or upcycle it instead?', use_column_width=True) 	
     else:
         st.write('Looks like there\'s a problem with processing this image...')
     
