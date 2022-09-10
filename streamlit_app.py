@@ -4,7 +4,6 @@ import numpy as np
 from matplotlib import image
 import tensorflow as tf
 import boto3
-from keras.models import load_model
 import h5py
 
 # Add app title
