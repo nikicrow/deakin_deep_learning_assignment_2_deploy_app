@@ -1,5 +1,5 @@
 tensorflow
 boto3
 matplotlib
-keras
+keras.models
 h5py

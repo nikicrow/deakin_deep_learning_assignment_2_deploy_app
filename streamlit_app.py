@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from matplotlib import image
 import tensorflow as tf
+from keras.models import load_model
 import boto3
 import h5py
 
@@ -40,27 +41,15 @@ def is_recyclable(uploaded_file):
     FILENAME = st.secrets["FILENAME"]
     REGION_NAME = st.secrets["REGION_NAME"]
 
-    # set up the s3 resource with all our secrets
-    # s3_resource = boto3.resource('s3', 
-    #                             aws_access_key_id = AWS_KEY,
-    #                             aws_secret_access_key = AWS_SECRET_KEY, 
-    #                             region_name='ap-southeast-2')
-
-    # # load the model
-    # loaded_model = s3_resource.Bucket(BUCKET).Object(KEY).get()['Body'].read()
-
-    # import boto3
-
     s3_client = boto3.client('s3', 
                             aws_access_key_id = AWS_KEY,
                             aws_secret_access_key = AWS_SECRET_KEY, 
                             region_name=REGION_NAME)
+    s3_client.download_file(BUCKET,
+                        KEY,
+                        FILENAME)
 
-    s3_client.download_file(BUCKET, KEY, FILENAME)
-
-    with h5py.File(FILENAME, 'r') as f:
-        model = f
-    #model = load_model(loaded_model)
+    model = load_model(FILENAME)
 
     # make prediction
     prediction = model.predict(np.expand_dims(preprocessed_image, axis=0))
