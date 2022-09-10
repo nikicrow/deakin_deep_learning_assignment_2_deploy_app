@@ -40,19 +40,19 @@ def is_recyclable(uploaded_file):
     KEY = st.secrets["KEY"]
     FILENAME = st.secrets["FILENAME"]
     REGION_NAME = st.secrets["REGION_NAME"]
-
+    # connect to s3 using secrets
     s3_client = boto3.client('s3', 
                             aws_access_key_id = AWS_KEY,
                             aws_secret_access_key = AWS_SECRET_KEY, 
                             region_name=REGION_NAME)
-    s3_client.download_file(BUCKET,
-                        KEY,
-                        FILENAME)
+    s3_client.download_file(BUCKET, KEY, FILENAME)
 
+    # load model
     model = load_model(FILENAME)
 
     # make prediction
     prediction = model.predict(np.expand_dims(preprocessed_image, axis=0))
+    
     # return outcome and prediction
     if prediction >= 0.5:
         return True, prediction
