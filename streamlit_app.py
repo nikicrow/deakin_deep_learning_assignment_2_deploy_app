@@ -71,7 +71,7 @@ if uploaded_file is not None:
     # create a function that returns the answer
     if outcome == True:
         st.write(f'This looks recyclable! To be precise, the model gave a {prediction_pretty} % chance that it is recyclable.', use_column_width=True)
-        st.write('Please make sure recycle it!', use_column_width=True) 	
+        st.write('Please make sure to recycle it!', use_column_width=True) 	
     elif outcome == False:
         st.write(f'This doesn\'t look recyclable. To be precise, the model gave a {prediction_pretty} % chance that it is recyclable.', use_column_width=True) 
         st.write('Can you reuse or upcycle it instead?', use_column_width=True) 	
