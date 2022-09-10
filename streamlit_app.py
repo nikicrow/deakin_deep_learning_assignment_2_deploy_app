@@ -12,7 +12,7 @@ st.markdown(
    f"""
    <style>
    p {
-   background-image: url('leafy_background.jpg');
+   background-image: url('https://www.pinterest.com/pin/floral-seamless-pattern-tropical-leaves-background-palm-tree-leaf-nature-border--192951165272631465/');
    }
    </style>
    """,
