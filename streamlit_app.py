@@ -7,6 +7,17 @@ from keras.models import load_model
 import boto3
 import h5py
 
+# Add background
+st.markdown(
+   f"""
+   <style>
+   p {
+   background-image: url('leafy_background.jpg');
+   }
+   </style>
+   """,
+   unsafe_allow_html=True)
+
 # Add app title
 st.title('Is this Recyclable?')
 st.write("Upload any image and we will tell you if it is recyclable or not")
