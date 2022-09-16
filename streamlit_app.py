@@ -16,7 +16,7 @@ uploaded_file = st.file_uploader("Please upload an image using this image upload
 
 # image preprocessor
 def preprocess_image(image):
-    image_size = 200
+    image_size = 150
     if image.shape[-1] == 3:
         image = tf.image.convert_image_dtype(image, tf.float32) 
         image = tf.image.resize(image, (image_size, image_size))
